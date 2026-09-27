@@ -62,7 +62,7 @@ async def get_soup(session: aiohttp.ClientSession, url: str) -> bs4.BeautifulSou
     _logger.info("Getting soup for '%s'", url)
 
     # Add random delay between 2-5 seconds before request
-    delay = random.uniform(2, 5)
+    delay = random.uniform(30, 180)
     await asyncio.sleep(delay)
 
     timeout = random.uniform(30, 180)
