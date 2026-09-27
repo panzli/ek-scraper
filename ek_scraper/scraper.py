@@ -4,6 +4,7 @@ import asyncio
 import collections.abc
 import dataclasses
 import logging
+import random
 import typing as ty
 from urllib.parse import urljoin
 
@@ -60,7 +61,10 @@ async def get_soup(session: aiohttp.ClientSession, url: str) -> bs4.BeautifulSou
     """Get the website and parse its markup using BeautifulSoup"""
     _logger.info("Getting soup for '%s'", url)
 
-    async with session.get(url, headers={"User-Agent": USER_AGENT}) as response:
+    timeout = random.uniform(30, 180)
+    timeout_obj = aiohttp.ClientTimeout(total=timeout)
+
+    async with session.get(url, headers={"User-Agent": USER_AGENT}, timeout=timeout_obj) as response:
         content = await response.text()
         if not response.content_type.startswith("text/html"):
             # We received an unexpected response
